@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bier og Fødevarer</title>
+<link rel="stylesheet" href="Style.css">
+<link rel="canonical" href="https://bierognaturen.de/foedevarer.html">
+<meta name="robots" content="index,follow">
+<meta name="description" content="Bier og fødevarer: Hvilke afgrøder afhænger af bier, og hvorfor er bestøvning vigtig?">
+<meta property="og:title" content="Fødevarer – Bier og Natur">
+<meta property="og:description" content="Bier og fødevarer: Hvilke afgrøder afhænger af bier, og hvorfor er bestøvning vigtig?">
+<meta property="og:url" content="https://bierognaturen.de/foedevarer.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Bier og Natur">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fødevarer – Bier og Natur">
+<meta name="twitter:description" content="Bier og fødevarer: Hvilke afgrøder afhænger af bier, og hvorfor er bestøvning vigtig?">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Forside", "item": "https://bierognaturen.de/"},
+    {"@type": "ListItem", "position": 2, "name": "Fødevarer", "item": "https://bierognaturen.de/foedevarer.html"}
+  ]
+}
+</script>
+</head>
+<body class="foedevarer-page">
+
+<div class="page-content">
+  <header>
+    <h1>Bier og Fødevarer</h1>
+    <p class="subtitle">Hvordan bier sikrer mad på vores bord</p>
+  </header>
+
+  <nav>
+    <a class="nav-link" href="natur.html">Natur</a>
+    <a class="nav-link active" aria-current="page" href="foedevarer.html">Fødevarer</a>
+    <a class="nav-link" href="trusler.html">Trusler</a>
+    <a class="nav-link" href="hjaelp.html">Hvordan hjælpe</a>
+  </nav>
+
+  <div class="content">
+    <div class="accordion">
+      <h2>Bestøvningens betydning <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Bier bestøver mere end halvdelen af de fødevarer, vi spiser dagligt. Æbler, bær, nødder og mange grøntsager er afhængige af bier. Uden bier ville mange af disse fødevarer forsvinde eller blive langt dyrere.</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <h2>Frugt og grønt <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Frugt som æbler, pærer, kirsebær og bær som jordbær og blåbær er direkte afhængige af bier. Mange grøntsager som agurk, squash og peberfrugt får højere udbytte, når bier bestøver dem.</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <h2>Nødder og olier <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Mandler og hasselnødder produceres kun i tilstrækkelig mængde, fordi bier bestøver blomsterne. Solsikke- og olivenolier får også hjælp fra bestøvning, hvilket øger kvalitet og udbytte.</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <h2>Honning og biprodukter <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Udover bestøvning giver bier honning, voks og propolis. Honning er en naturlig sødemiddel og kan bruges i madlavning og medicin. Biprodukter har også betydning for økonomien og kulturhistorien.</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <h2>Økonomisk betydning <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Bier bidrager med milliarder af kroner til landbrugets økonomi årligt. Hvis bierne forsvandt, skulle landmænd bruge kunstig bestøvning, som er dyrt og mindre effektivt. Derfor er bier en afgørende del af fødevareproduktionen.</p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="navigateToPage('index.html')">⬅ Tilbage til forsiden</button>
+  </div>
+
+  <footer>
+    © 2025 Bier & Natur – Projektopgave
+  </footer>
+</div>
+
+<script>
+// Accordion funktionalitet + tilgængelighed (smoothed height)
+const accordions = document.querySelectorAll('.accordion h2');
+accordions.forEach(acc => {
+  acc.setAttribute('role', 'button');
+  acc.setAttribute('tabindex', '0');
+  acc.setAttribute('aria-expanded', 'false');
+
+  acc.addEventListener('click', () => {
+    const parent = acc.parentElement;
+    const panel = acc.nextElementSibling;
+
+    const active = parent.classList.toggle('active');
+    acc.setAttribute('aria-expanded', active ? 'true' : 'false');
+
+    if (active) {
+      panel.style.height = panel.scrollHeight + 'px';
+      panel.style.paddingTop = '15px';
+      panel.style.paddingBottom = '15px';
+      const onEnd = (e) => {
+        if (e.propertyName !== 'height') return;
+        panel.removeEventListener('transitionend', onEnd);
+        panel.style.height = 'auto';
+      };
+      panel.addEventListener('transitionend', onEnd);
+    } else {
+      if (panel.style.height === '' || panel.style.height === 'auto') {
+        panel.style.height = panel.scrollHeight + 'px';
+        void panel.offsetHeight;
+      }
+      panel.style.height = '0px';
+      panel.style.paddingTop = '0';
+      panel.style.paddingBottom = '0';
+    }
+  });
+
+  acc.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      acc.click();
+    }
+  });
+});
+
+// Navigationsfunktion med fade-effekt
+function navigateToPage(url) {
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
