@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R640B0SWMP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);} 
+  gtag('js', new Date());
+
+  gtag('config', 'G-R640B0SWMP');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naturen og Bier</title>
+<link rel="stylesheet" href="Style.css">
+<link rel="canonical" href="https://bierognaturen.de/natur.html">
+<meta name="robots" content="index,follow">
+<meta name="description" content="Naturen og bier: Forstå biernes rolle i økosystemet og biodiversitet.">
+<meta property="og:title" content="Natur – Bier og Natur">
+<meta property="og:description" content="Naturen og bier: Forstå biernes rolle i økosystemet og biodiversitet.">
+<meta property="og:url" content="https://bierognaturen.de/natur.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Bier og Natur">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Natur – Bier og Natur">
+<meta name="twitter:description" content="Naturen og bier: Forstå biernes rolle i økosystemet og biodiversitet.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Forside", "item": "https://bierognaturen.de/"},
+    {"@type": "ListItem", "position": 2, "name": "Natur", "item": "https://bierognaturen.de/natur.html"}
+  ]
+}
+</script>
+</head>
+<body class="natur-page">
+
+<div class="page-content">
+  <header>
+    <h1>Naturen og Bier</h1>
+    <p class="subtitle">Hvordan bier holder økosystemet i live</p>
+  </header>
+
+  <nav>
+    <a class="nav-link active" aria-current="page" href="natur.html">Natur</a>
+    <a class="nav-link" href="foedevarer.html">Fødevarer</a>
+    <a class="nav-link" href="trusler.html">Trusler</a>
+    <a class="nav-link" href="hjaelp.html">Hvordan hjælpe</a>
+  </nav>
+
+  <div class="content">
+    <div class="accordion">
+      <h2>Biernes rolle i økosystemet <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Bier transporterer pollen fra blomst til blomst og sikrer, at planter kan lave frø og frugter. Uden bier ville biodiversiteten falde drastisk, og mange planter ville forsvinde.</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <h2>Biodiversitet og sammenhæng <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Biodiversitet betyder variationen af planter og dyr. Bier forbinder planter og dyr i fødekæder, og deres forsvinden kan skabe ubalance i hele naturen.</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <h2>Planter afhængige af bier <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Mange blomster, buske og frugttræer såsom æbler og kirsebær er afhængige af bier for bestøvning. Uden dem ville disse planter blive færre, hvilket også påvirker dyr, der spiser dem.</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <h2>Bier og fødekæder <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <p>Fødegrundlaget i naturen starter ofte med planter. Hvis bierne ikke bestøver dem, rammes hele kæden: smådyr, større dyr og til sidst mennesker. Bier har derfor enorm betydning.</p>
+      </div>
+    </div>
+
+    <button class="back-btn" onclick="navigateToPage('index.html')">⬅ Tilbage til forsiden</button>
+  </div>
+
+  <footer>
+    © 2025 Bier & Natur – Projektopgave
+  </footer>
+</div>
+
+<script>
+// Accordion funktionalitet + tilgængelighed (smoothed height)
+const accordions = document.querySelectorAll('.accordion h2');
+accordions.forEach(acc => {
+  acc.setAttribute('role', 'button');
+  acc.setAttribute('tabindex', '0');
+  acc.setAttribute('aria-expanded', 'false');
+
+  acc.addEventListener('click', () => {
+    const parent = acc.parentElement;
+    const panel = acc.nextElementSibling;
+
+    const active = parent.classList.toggle('active');
+    acc.setAttribute('aria-expanded', active ? 'true' : 'false');
+
+    if (active) {
+      panel.style.height = panel.scrollHeight + 'px';
+      panel.style.paddingTop = '15px';
+      panel.style.paddingBottom = '15px';
+      const onEnd = (e) => {
+        if (e.propertyName !== 'height') return;
+        panel.removeEventListener('transitionend', onEnd);
+        panel.style.height = 'auto';
+      };
+      panel.addEventListener('transitionend', onEnd);
+    } else {
+      if (panel.style.height === '' || panel.style.height === 'auto') {
+        panel.style.height = panel.scrollHeight + 'px';
+        void panel.offsetHeight;
+      }
+      panel.style.height = '0px';
+      panel.style.paddingTop = '0';
+      panel.style.paddingBottom = '0';
+    }
+  });
+
+  acc.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      acc.click();
+    }
+  });
+});
+
+// Navigationsfunktion med fade-effekt
+function navigateToPage(url) {
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
