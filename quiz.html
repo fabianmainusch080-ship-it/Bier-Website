@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R640B0SWMP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);} 
+  gtag('js', new Date());
+
+  gtag('config', 'G-R640B0SWMP');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz om Bier og Natur</title>
+<link rel="stylesheet" href="Style.css">
+<link rel="canonical" href="https://bierognaturen.de/quiz.html">
+<meta name="robots" content="index,follow">
+<meta name="description" content="Test din viden om bier og natur med vores interaktive quiz.">
+<meta property="og:title" content="Quiz – Bier og Natur">
+<meta property="og:description" content="Test din viden om bier og natur med vores interaktive quiz.">
+<meta property="og:url" content="https://bierognaturen.de/quiz.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Bier og Natur">
+<meta property="og:locale" content="da_DK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Quiz – Bier og Natur">
+<meta name="twitter:description" content="Test din viden om bier og natur med vores interaktive quiz.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Forside", "item": "https://bierognaturen.de/"},
+    {"@type": "ListItem", "position": 2, "name": "Quiz", "item": "https://bierognaturen.de/quiz.html"}
+  ]
+}
+</script>
+<style>
+/* Quiz-specific styling */
+body.quiz-page {
+  --bg-start: #f0f8ff; --bg-end: #e6f3ff;
+  --accent: #4a90e2; --accent-2: #66a3e0; --accent-hover: #5ba3f5; --accent-dark: #2c5aa0;
+  --header-bg: #b3d9ff; --header-border: #4a90e2;
+}
+
+.quiz-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.quiz-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.quiz-header h2 {
+  color: var(--accent-dark);
+  margin: 0;
+  font-size: 2em;
+}
+
+.highscore-display {
+  background: linear-gradient(45deg, var(--accent-2), var(--accent));
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.quiz-stats {
+  display: flex;
+  justify-content: space-between;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.question-container {
+  margin-bottom: 30px;
+}
+
+.question-title {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--accent-dark);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.question-number {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-right: 10px;
+  font-size: 0.9em;
+}
+
+.answers {
+  display: grid;
+  gap: 12px;
+}
+
+.answer-option {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  padding: 15px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  font-size: 1.05em;
+}
+
+.answer-option:hover {
+  background: #e3f2fd;
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.answer-option.selected {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent-dark);
+}
+
+.quiz-controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.quiz-btn {
+  background: linear-gradient(45deg, var(--accent-2), var(--accent));
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quiz-btn:hover {
+  background: linear-gradient(45deg, var(--accent), var(--accent-hover));
+  transform: translateY(-2px);
+}
+
+.quiz-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.result-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.result-title {
+  font-size: 2.2em;
+  margin-bottom: 20px;
+  color: var(--accent-dark);
+}
+
+.result-success {
+  color: #28a745;
+}
+
+.result-failure {
+  color: #dc3545;
+}
+
+.result-score {
+  font-size: 1.5em;
+  margin: 20px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.new-highscore {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  display: inline-block;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.quiz-start {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.start-instructions {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  color: #856404;
+  line-height: 1.6;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Success indicator for correct answers */
+.success-indicator {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 1.1em;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateX(100px) scale(0.8);
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.success-indicator.show {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.success-indicator.fade-out {
+  opacity: 0;
+  transform: translateX(50px) scale(0.9);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .quiz-container {
+    margin: 0 auto 20px;
+    padding: 16px;
+  }
+  
+  .quiz-stats {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 12px;
+  }
+  
+  .quiz-controls {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .quiz-btn {
+    width: 100%;
+    max-width: 250px;
+    padding: 14px 20px;
+  }
+  
+  .quiz-header h2 {
+    font-size: 1.6em;
+  }
+  
+  .question-title {
+    font-size: 1.2em;
+  }
+  
+  .result-title {
+    font-size: 1.8em;
+  }
+  
+  .success-indicator {
+    top: 10px;
+    right: 10px;
+    font-size: 1em;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quiz-container {
+    padding: 12px;
+    margin: 0 8px 20px;
+  }
+  
+  .quiz-start {
+    padding: 20px 10px;
+  }
+  
+  .start-instructions {
+    padding: 16px;
+    margin: 16px 0;
+  }
+  
+  .start-instructions ul {
+    max-width: none !important;
+    padding-left: 20px;
+  }
+  
+  .quiz-header h2 {
+    font-size: 1.4em;
+    line-height: 1.3;
+  }
+  
+  .question-title {
+    font-size: 1.1em;
+    line-height: 1.4;
+  }
+  
+  .answer-option {
+    padding: 12px 16px;
+    font-size: 1em;
+  }
+  
+  .quiz-btn {
+    width: 100%;
+    max-width: none;
+    font-size: 1em;
+  }
+  
+  .result-container {
+    padding: 20px 10px;
+  }
+  
+  .result-title {
+    font-size: 1.5em;
+    line-height: 1.3;
+  }
+  
+  .result-score {
+    font-size: 1.2em;
+    padding: 16px;
+  }
+}
+</style>
+</head>
+<body class="quiz-page">
+
+<div class="page-content">
+  <header>
+    <h1>Quiz om Bier og Natur</h1>
+    <p class="subtitle">Test din viden om biernes rolle i økosystemet</p>
+  </header>
+
+  <nav>
+    <a class="nav-link" href="natur.html">Natur</a>
+    <a class="nav-link" href="foedevarer.html">Fødevarer</a>
+    <a class="nav-link" href="trusler.html">Trusler</a>
+    <a class="nav-link" href="hjaelp.html">Hvordan hjælpe</a>
+    <a class="nav-link active" aria-current="page" href="quiz.html">Quiz</a>
+  </nav>
+
+  <div class="content">
+    <div class="quiz-container">
+      
+      <!-- Quiz Start Screen -->
+      <div id="quiz-start" class="quiz-start">
+        <div class="quiz-header">
+          <h2>Velkommen til Bier & Natur Quiz!</h2>
+        </div>
+        
+        <div id="highscore-display" class="highscore-display">
+          Din nuværende highscore: <span id="current-highscore">0</span> rigtige svar
+        </div>
+        
+        <div class="start-instructions">
+          <h3>Sådan fungerer quizzen:</h3>
+          <ul style="text-align: left; max-width: 500px; margin: 0 auto;">
+            <li>Du får spørgsmål i tilfældig rækkefølge</li>
+            <li>Hvis du svarer <strong>forkert</strong> på et spørgsmål, slutter quizzen med det samme</li>
+            <li>Målet er at svare rigtigt på alle spørgsmål</li>
+          </ul>
+        </div>
+        
+        <div class="quiz-controls">
+          <button id="start-quiz-btn" class="quiz-btn">Start Quiz</button>
+        </div>
+      </div>
+
+      <!-- Quiz Game Screen -->
+      <div id="quiz-game" class="hidden">
+        <div class="quiz-stats">
+          <span>Spørgsmål: <span id="current-question-num">1</span> / <span id="total-questions">25</span></span>
+          <span>Rigtige svar: <span id="correct-count">0</span></span>
+        </div>
+
+        <div class="question-container">
+          <div class="question-title">
+            <span id="question-number" class="question-number">1</span>
+            <span id="question-text">Spørgsmålets tekst kommer her...</span>
+          </div>
+          
+          <div id="answers" class="answers">
+            <!-- Answer options will be dynamically inserted here -->
+          </div>
+        </div>
+
+        <div class="quiz-controls">
+          <button id="submit-answer-btn" class="quiz-btn" disabled>Svar</button>
+        </div>
+      </div>
+
+      <!-- Quiz Result Screen -->
+      <div id="quiz-result" class="hidden">
+        <div class="result-container">
+          <h2 id="result-title" class="result-title"></h2>
+          <div id="result-score" class="result-score"></div>
+          <div id="new-highscore-badge" class="new-highscore hidden">🎉 Ny rekord! 🎉</div>
+          
+          <div class="quiz-controls">
+            <button id="restart-quiz-btn" class="quiz-btn">Spil igen</button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <button class="back-btn" onclick="navigateToPage('index.html')">⬅ Tilbage til forsiden</button>
+  </div>
+
+  <footer>
+    © 2025 Bier & Natur – Projektopgave
+  </footer>
+</div>
+
+<!-- Success indicator for correct answers -->
+<div id="success-indicator" class="success-indicator">
+  ✓ Rigtigt!
+</div>
+
+<script>
+// Quiz data - 25 questions about bees and nature
+const quizQuestions = [
+  {
+    question: "Hvor mange procent af vores mad afhænger af bestøvning fra bier?",
+    answers: ["Omkring 15%", "Omkring 35%", "Omkring 55%", "Omkring 75%"],
+    correct: 1
+  },
+  {
+    question: "Hvad hedder den proces, hvor bier overfører pollen fra én blomst til en anden?",
+    answers: ["Bestøvning", "Pollinering", "Blomstring", "Frugtificering"],
+    correct: 0
+  },
+  {
+    question: "Hvor mange forskellige plantearter bestøver bier på verdensplan?",
+    answers: ["Omkring 5.000", "Omkring 20.000", "Omkring 80.000", "Omkring 170.000"],
+    correct: 3
+  },
+  {
+    question: "Hvad er det primære formål med biernes dans i biestaden?",
+    answers: ["At underholde andre bier", "At kommunikere beliggenheden af fødekilder", "At finde en partner", "At varme biestaden op"],
+    correct: 1
+  },
+  {
+    question: "Hvor langt kan en honningbi flyve fra sin bistand for at samle nektar?",
+    answers: ["Omkring 1 km", "Omkring 5 km", "Omkring 10 km", "Omkring 15 km"],
+    correct: 1
+  },
+  {
+    question: "Hvor mange gange slår en honningbis vinger per sekund?",
+    answers: ["50 gange", "130 gange", "230 gange", "330 gange"],
+    correct: 2
+  },
+  {
+    question: "Hvad sker der med økosystemet, hvis bierne forsvinder?",
+    answers: ["Intet særligt", "Kun frugttræer påvirkes", "Mange planter kan ikke reproducere", "Kun blomster påvirkes"],
+    correct: 2
+  },
+  {
+    question: "Hvad er hovedårsagen til nedgangen i biepopulationen?",
+    answers: ["Klimaforandringer alene", "En kombination af faktorer", "Kun pesticider", "Kun tab af levesteder"],
+    correct: 1
+  },
+  {
+    question: "Hvilken af disse afgrøder er IKKE afhængig af bier for bestøvning?",
+    answers: ["Æbler", "Mandler", "Græs", "Blåbær"],
+    correct: 2
+  },
+  {
+    question: "Hvor mange bier bor typisk i en honningbikoloni om sommeren?",
+    answers: ["5.000-10.000", "20.000-80.000", "100.000-150.000", "200.000-300.000"],
+    correct: 1
+  },
+  {
+    question: "Hvilken type bi producerer honning?",
+    answers: ["Alle bier", "Kun humlebier", "Kun solitære bier", "Kun honningbier"],
+    correct: 3
+  },
+  {
+    question: "Hvad bruger bier pollen til?",
+    answers: ["Til at lave honning", "Som protein til larverne", "Til at bygge biestaden", "Til at rense vingerne"],
+    correct: 1
+  },
+  {
+    question: "Hvor lang tid lever en arbejderbi om sommeren?",
+    answers: ["1-2 uger", "4-6 uger", "3-4 måneder", "1 år"],
+    correct: 1
+  },
+  {
+    question: "Hvilken temperatur holder bier konstant i biestaden?",
+    answers: ["20°C", "25°C", "35°C", "40°C"],
+    correct: 2
+  },
+  {
+    question: "Hvad kaldes det, når en bikoloni deler sig og dronningen flytter?",
+    answers: ["Sværmning", "Migration", "Hibernation", "Kolonisering"],
+    correct: 0
+  },
+  {
+    question: "Hvor mange kilometer kan en bi flyve på én dag?",
+    answers: ["Op til 50 km", "Op til 100 km", "Op til 150 km", "Op til 200 km"],
+    correct: 2
+  },
+  {
+    question: "Hvad er neonikotinoider?",
+    answers: ["En type blomst", "Pesticider der skader bier", "Bienes naturlige føde", "En biesygdom"],
+    correct: 1
+  },
+  {
+    question: "Hvor mange forskellige arter af bier findes der på verdensplan?",
+    answers: ["Omkring 2.000", "Omkring 10.000", "Omkring 20.000", "Omkring 50.000"],
+    correct: 2
+  },
+  {
+    question: "Hvad hedder de celler, bier laver deres honning i?",
+    answers: ["Heksagonale celler", "Runde celler", "Firkantede celler", "Trekantede celler"],
+    correct: 0
+  },
+  {
+    question: "Hvilken rolle spiller bier i kakaoproduktionen?",
+    answers: ["De bestøver kakaobønner", "De bestøver kakaotræer", "De har ingen rolle", "De producerer kakao"],
+    correct: 1
+  },
+  {
+    question: "Hvad kan du gøre i din have for at hjælpe bierne?",
+    answers: ["Plante bivenlige blomster", "Undgå pesticider", "Lave insekthoteller", "Alt det ovenstående"],
+    correct: 3
+  },
+  {
+    question: "Hvor gammel kan en bidronning blive?",
+    answers: ["6 måneder", "1 år", "3-4 år", "10 år"],
+    correct: 2
+  },
+  {
+    question: "Hvilken måned sværmer bier typisk i Danmark?",
+    answers: ["April", "Maj", "Juli", "September"],
+    correct: 1
+  },
+  {
+    question: "Hvad er en solitær bi?",
+    answers: ["En bi der lever alene", "En bi der kun kommer om natten", "En bi uden vinger", "En syg bi"],
+    correct: 0
+  },
+  {
+    question: "Hvor mange øjne har en honningbi?",
+    answers: ["2 øjne", "3 øjne", "5 øjne", "Hundredvis af øjne"],
+    correct: 2
+  },
+  {
+    question: "Hvilken af disse blomster er særligt god for bier?",
+    answers: ["Roser", "Lavendel", "Tulipaner", "Begoniaer"],
+    correct: 1
+  },
+  {
+    question: "Hvad sker der med humlebier om vinteren?",
+    answers: ["De flygter til varmere lande", "Kun dronningen overlever", "Hele kolonien dør", "De går i dvale sammen"],
+    correct: 1
+  },
+  {
+    question: "Hvor meget honning kan en stærk bikoloni producere om året?",
+    answers: ["5-10 kg", "30-60 kg", "100-150 kg", "200-300 kg"],
+    correct: 1
+  },
+  {
+    question: "Hvad er biernes vigtigste trussel i dag?",
+    answers: ["Rovfugle", "Menneskets påvirkning af miljøet", "Naturlige sygdomme", "Konkurrence fra andre insekter"],
+    correct: 1
+  },
+  {
+    question: "Hvor stor en del af alle bestøvende insekter udgør bier?",
+    answers: ["Ca. 25%", "Ca. 50%", "Ca. 75%", "Ca. 90%"],
+    correct: 2
+  }
+];
+
+// Quiz state
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let correctAnswers = 0;
+let selectedAnswer = null;
+let highScore = 0;
+
+// DOM elements
+const quizStartDiv = document.getElementById('quiz-start');
+const quizGameDiv = document.getElementById('quiz-game');
+const quizResultDiv = document.getElementById('quiz-result');
+const startQuizBtn = document.getElementById('start-quiz-btn');
+const submitAnswerBtn = document.getElementById('submit-answer-btn');
+const restartQuizBtn = document.getElementById('restart-quiz-btn');
+const successIndicator = document.getElementById('success-indicator');
+
+// Initialize quiz
+document.addEventListener('DOMContentLoaded', function() {
+  loadHighScore();
+  
+  startQuizBtn.addEventListener('click', startQuiz);
+  submitAnswerBtn.addEventListener('click', submitAnswer);
+  restartQuizBtn.addEventListener('click', restartQuiz);
+});
+
+function loadHighScore() {
+  highScore = parseInt(localStorage.getItem('beeQuizHighScore')) || 0;
+  document.getElementById('current-highscore').textContent = highScore;
+}
+
+function saveHighScore(score) {
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem('beeQuizHighScore', highScore);
+    return true; // New high score
+  }
+  return false;
+}
+
+function showSuccessIndicator() {
+  // Reset any existing animation
+  successIndicator.classList.remove('show', 'fade-out');
+  
+  // Show the indicator
+  setTimeout(() => {
+    successIndicator.classList.add('show');
+  }, 50);
+  
+  // Start fade out after 1.2 seconds
+  setTimeout(() => {
+    successIndicator.classList.add('fade-out');
+  }, 1200);
+  
+  // Remove classes after animation completes
+  setTimeout(() => {
+    successIndicator.classList.remove('show', 'fade-out');
+  }, 1800);
+}
+
+function startQuiz() {
+  // Reset state
+  currentQuestionIndex = 0;
+  correctAnswers = 0;
+  selectedAnswer = null;
+  
+  // Shuffle questions randomly
+  currentQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+  
+  // Show game screen
+  quizStartDiv.classList.add('hidden');
+  quizGameDiv.classList.remove('hidden');
+  quizResultDiv.classList.add('hidden');
+  
+  // Update totals
+  document.getElementById('total-questions').textContent = currentQuestions.length;
+  
+  displayCurrentQuestion();
+}
+
+function displayCurrentQuestion() {
+  const question = currentQuestions[currentQuestionIndex];
+  
+  // Update question info
+  document.getElementById('current-question-num').textContent = currentQuestionIndex + 1;
+  document.getElementById('question-number').textContent = currentQuestionIndex + 1;
+  document.getElementById('question-text').textContent = question.question;
+  document.getElementById('correct-count').textContent = correctAnswers;
+  
+  // Create answer options
+  const answersContainer = document.getElementById('answers');
+  answersContainer.innerHTML = '';
+  
+  question.answers.forEach((answer, index) => {
+    const answerDiv = document.createElement('div');
+    answerDiv.className = 'answer-option';
+    answerDiv.textContent = answer;
+    answerDiv.dataset.index = index;
+    
+    answerDiv.addEventListener('click', function() {
+      selectAnswer(index, answerDiv);
+    });
+    
+    answersContainer.appendChild(answerDiv);
+  });
+  
+  // Reset submit button
+  selectedAnswer = null;
+  submitAnswerBtn.disabled = true;
+}
+
+function selectAnswer(index, element) {
+  // Remove previous selection
+  document.querySelectorAll('.answer-option').forEach(option => {
+    option.classList.remove('selected');
+  });
+  
+  // Select current answer
+  element.classList.add('selected');
+  selectedAnswer = index;
+  submitAnswerBtn.disabled = false;
+}
+
+function submitAnswer() {
+  if (selectedAnswer === null) return;
+  
+  const question = currentQuestions[currentQuestionIndex];
+  const isCorrect = selectedAnswer === question.correct;
+  
+  if (isCorrect) {
+    correctAnswers++;
+    currentQuestionIndex++;
+    
+    // Show success indicator
+    showSuccessIndicator();
+    
+    // Small delay before proceeding to next question for better UX
+    setTimeout(() => {
+      // Check if quiz is complete
+      if (currentQuestionIndex >= currentQuestions.length) {
+        showResult(true, "Tillykke! Du har svaret rigtigt på alle spørgsmål!");
+      } else {
+        // Continue to next question
+        displayCurrentQuestion();
+      }
+    }, 600);
+  } else {
+    // Wrong answer - end quiz immediately
+    showResult(false, "Forkert! Du har tabt.");
+  }
+}
+
+function showResult(success, message) {
+  quizGameDiv.classList.add('hidden');
+  quizResultDiv.classList.remove('hidden');
+  
+  const resultTitle = document.getElementById('result-title');
+  const resultScore = document.getElementById('result-score');
+  const newHighScoreBadge = document.getElementById('new-highscore-badge');
+  
+  resultTitle.textContent = message;
+  resultTitle.className = success ? 'result-title result-success' : 'result-title result-failure';
+  
+  resultScore.innerHTML = `Du svarede rigtigt på <strong>${correctAnswers}</strong> ud af ${currentQuestions.length} spørgsmål.`;
+  
+  // Check for new high score
+  const isNewHighScore = saveHighScore(correctAnswers);
+  if (isNewHighScore) {
+    newHighScoreBadge.classList.remove('hidden');
+  } else {
+    newHighScoreBadge.classList.add('hidden');
+  }
+}
+
+function restartQuiz() {
+  // Go directly to quiz game instead of start screen
+  startQuiz();
+}
+
+// Navigation function
+function navigateToPage(url) {
+  window.location.href = url;
+}
+</script>
+
+</body>
+</html>
