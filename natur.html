@@ -50,6 +50,7 @@
     <a class="nav-link" href="foedevarer.html">Fødevarer</a>
     <a class="nav-link" href="trusler.html">Trusler</a>
     <a class="nav-link" href="hjaelp.html">Hvordan hjælpe</a>
+    <a class="nav-link" href="quiz.html">Quiz</a>
   </nav>
 
   <div class="content">
@@ -90,7 +91,7 @@
 </div>
 
 <script>
-// Accordion funktionalitet + tilgængelighed (smoothed height)
+// Fixed Accordion funktionalitet + tilgængelighed (smoothed height)
 const accordions = document.querySelectorAll('.accordion h2');
 accordions.forEach(acc => {
   acc.setAttribute('role', 'button');
@@ -101,27 +102,45 @@ accordions.forEach(acc => {
     const parent = acc.parentElement;
     const panel = acc.nextElementSibling;
 
+    // Clean up any existing transition listeners to prevent conflicts
+    const existingListeners = panel._transitionListeners || [];
+    existingListeners.forEach(listener => {
+      panel.removeEventListener('transitionend', listener);
+    });
+    panel._transitionListeners = [];
+
     const active = parent.classList.toggle('active');
     acc.setAttribute('aria-expanded', active ? 'true' : 'false');
 
     if (active) {
+      // Opening
       panel.style.height = panel.scrollHeight + 'px';
       panel.style.paddingTop = '15px';
       panel.style.paddingBottom = '15px';
+      
       const onEnd = (e) => {
         if (e.propertyName !== 'height') return;
         panel.removeEventListener('transitionend', onEnd);
-        panel.style.height = 'auto';
+        if (parent.classList.contains('active')) { // Only set auto if still active
+          panel.style.height = 'auto';
+        }
       };
       panel.addEventListener('transitionend', onEnd);
+      panel._transitionListeners = [onEnd];
     } else {
-      if (panel.style.height === '' || panel.style.height === 'auto') {
+      // Closing - ensure we start from a fixed height
+      if (panel.style.height === 'auto' || panel.style.height === '') {
         panel.style.height = panel.scrollHeight + 'px';
-        void panel.offsetHeight;
+        // Force a reflow to apply the height
+        panel.offsetHeight;
       }
-      panel.style.height = '0px';
-      panel.style.paddingTop = '0';
-      panel.style.paddingBottom = '0';
+      
+      // Small delay to ensure height is set before animating to 0
+      requestAnimationFrame(() => {
+        panel.style.height = '0px';
+        panel.style.paddingTop = '0';
+        panel.style.paddingBottom = '0';
+      });
     }
   });
 
