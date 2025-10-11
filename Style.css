@@ -45,6 +45,12 @@ body.hjælp-page {
   --header-bg: #87ceeb; --header-border: #4682b4;
 }
 
+body.quiz-page {
+  --bg-start: #f0f8ff; --bg-end: #e6f3ff;
+  --accent: #4a90e2; --accent-2: #66a3e0; --accent-hover: #5ba3f5; --accent-dark: #2c5aa0;
+  --header-bg: #b3d9ff; --header-border: #4a90e2;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -359,7 +365,8 @@ footer {
 .natur-page footer,
 .foedevarer-page footer,
 .trusler-page footer,
-.hjælp-page footer {
+.hjælp-page footer,
+.quiz-page footer {
   background: #333;
   color: white;
   margin-top: 40px;
@@ -369,7 +376,8 @@ footer {
 .natur-page nav,
 .foedevarer-page nav,
 .trusler-page nav,
-.hjælp-page nav {
+.hjælp-page nav,
+.quiz-page nav {
   position: sticky;
   top: 0;
   z-index: 99;
@@ -401,6 +409,11 @@ body.trusler-page {
 /* Hjælp page background (placeholder) */
 body.hjælp-page {
   background: linear-gradient(135deg, #e6f7ff, #ccf2ff);
+}
+
+/* Quiz page background */
+body.quiz-page {
+  background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
