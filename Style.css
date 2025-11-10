@@ -695,3 +695,28 @@ nav button:focus-visible,
   .bee-overlay h3 { font-size: 1rem; }
   .bee-overlay ul { font-size: 0.9rem; }
 }
+
+/* Mobile-friendly facts: ensure overlays don't cut off on phones */
+@media (max-width: 600px) {
+  /* Make cards full width for readability */
+  .bee-grid { grid-template-columns: 1fr; }
+  /* Allow the card to expand with its content */
+  .bee-card { overflow: visible; }
+  /* On touch phones, show facts as inline content when a card is open */
+  .bee-card .bee-overlay {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    max-height: none;
+    overflow: visible;
+    padding: 12px 12px 14px;
+    background: rgba(0,0,0,0.68);
+    color: #fff;
+    border-top: 1px solid rgba(255,255,255,0.18);
+  }
+  /* Only show the facts when the card is actually opened */
+  .bee-card:not(.open) .bee-overlay { display: none; }
+  /* Hide badge when open to avoid overlap */
+  .bee-card.open .bee-badge { opacity: 0; transform: translateY(6px); }
+}
