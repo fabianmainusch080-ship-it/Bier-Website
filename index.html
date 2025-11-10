@@ -201,18 +201,22 @@ footer {
 /* Responsive tweaks for Forside */
 @media (max-width: 768px) {
   .button-menu { 
-    gap: 15px; 
+    gap: 14px; 
     margin: 24px 0; 
     width: 100%; 
+    max-width: 100%;
     padding: 0 16px;
     box-sizing: border-box;
+    overflow: hidden; /* prevent subtle horizontal spill */
   }
   .nav-button { 
     padding: 12px 18px; 
     font-size: 1rem; 
-    flex: 1;
-    min-width: 0;
+    flex: 1 1 calc(50% - 14px);
+    min-width: calc(50% - 14px);
+    max-width: 100%;
     text-align: center;
+    box-sizing: border-box;
   }
   main { margin: 18px 12px 40px; padding: 20px; }
 }
