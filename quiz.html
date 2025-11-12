@@ -229,6 +229,17 @@ body.quiz-page {
   display: none;
 }
 
+/* Subtle image at bottom of quiz page */
+.sneaky-pic {
+  display: block;
+  margin: 10px auto 0;
+  max-width: 160px;
+  width: 40%;
+  opacity: 0.9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
 /* Success indicator for correct answers */
 .success-indicator {
   position: fixed;
@@ -450,6 +461,8 @@ body.quiz-page {
     </div>
 
     <button class="back-btn" onclick="navigateToPage('index.html')">⬅ Tilbage til forsiden</button>
+
+    <img src="images/Screenshot_20250620-225255.png" class="sneaky-pic" alt="" aria-hidden="true" loading="lazy" decoding="async">
   </div>
 
   <footer>
