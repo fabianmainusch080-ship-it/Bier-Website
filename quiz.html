@@ -217,6 +217,14 @@ body.quiz-page {
   line-height: 1.6;
 }
 
+.difficulty-select {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+
 .hidden {
   display: none;
 }
@@ -378,8 +386,15 @@ body.quiz-page {
           <h2>Velkommen til Bier & Natur Quiz!</h2>
         </div>
         
+        <div class="difficulty-select" role="radiogroup" aria-label="Vælg sværhedsgrad">
+          <strong>Vælg sværhedsgrad:</strong>
+          <label><input type="radio" name="difficulty" value="easy" id="diff-easy"> Let</label>
+          <label><input type="radio" name="difficulty" value="medium" id="diff-medium" checked> Middel</label>
+          <label><input type="radio" name="difficulty" value="hard" id="diff-hard"> Svær</label>
+        </div>
+        
         <div id="highscore-display" class="highscore-display">
-          Din nuværende highscore: <span id="current-highscore">0</span> rigtige svar
+          Din highscore (<span id="current-difficulty-label">Middel</span>): <span id="current-highscore">0</span> rigtige svar
         </div>
         
         <div class="start-instructions">
@@ -448,7 +463,7 @@ body.quiz-page {
 </div>
 
 <script>
-// Quiz data - 25 questions about bees and nature
+// Quiz data – spørgsmål om bier og natur (Middel)
 const quizQuestions = [
   {
     question: "Hvor mange procent af vores mad afhænger af bestøvning fra bier?",
@@ -602,11 +617,78 @@ const quizQuestions = [
   }
 ];
 
+// Let – nemme spørgsmål
+const quizQuestionsEasy = [
+  { question: "Hvilken type bi producerer honning?", answers: ["Alle bier", "Kun honningbier", "Kun humlebier", "Kun solitære bier"], correct: 1 },
+  { question: "Hvad bruger bier pollen til?", answers: ["Som protein til larverne", "Til at bygge reden", "Til at flyve", "Til at sove"], correct: 0 },
+  { question: "Hvad kan du gøre i haven for at hjælpe bierne?", answers: ["Bruge flere pesticider", "Plante bivenlige blomster", "Fjerne alle blomster", "Klippe alt græs meget kort"], correct: 1 },
+  { question: "Er en svirreflue en bi?", answers: ["Ja", "Nej, det er en flue", "Ja, en humlebi", "Det er en hveps"], correct: 1 },
+  { question: "Hvad kaldes biernes arbejde med at flytte pollen?", answers: ["Bestøvning", "Vanding", "Gravning", "Høstning"], correct: 0 },
+  { question: "Hvornår blomstrer løvetand typisk?", answers: ["Marts–maj", "Januar–februar", "November", "Hele vinteren"], correct: 0 },
+  { question: "Er lavendel god for bier?", answers: ["Ja", "Nej"], correct: 0 },
+  { question: "Er ringblomst (Calendula officinalis) god for bier?", answers: ["Ja", "Nej"], correct: 0 },
+  { question: "Hvor mange øjne har en honningbi?", answers: ["2", "5", "3", "8"], correct: 1 },
+  { question: "Hvilket dyr ligner ofte en bi, men har kun ét par vinger?", answers: ["Svirreflue", "Humlebi", "Honningbi", "Gedehams"], correct: 0 },
+  { question: "Hvilken blomst er særligt god for bier?", answers: ["Lavendel", "Plastikblomster", "Kunstige roser", "Ingen"], correct: 0 },
+  { question: "Hvad hedder dronningens job i bistokken?", answers: ["At lægge æg", "At samle pollen", "At bygge vokstavler", "At jage hvepse"], correct: 0 },
+  // Nye lette spørgsmål
+  { question: "Hvad laver bier honning af?", answers: ["Nektar", "Vand", "Pollen alene", "Blade"], correct: 0 },
+  { question: "Hvor mange par vinger har en flue?", answers: ["1", "2", "3", "4"], correct: 0 },
+  { question: "Kan hvepse stikke flere gange?", answers: ["Ja", "Nej"], correct: 0 },
+  { question: "Er svirrefluer farlige?", answers: ["Nej, de stikker ikke", "Ja, meget"], correct: 0 },
+  { question: "Hvornår blomstrer hindbær (Rubus idaeus)?", answers: ["Juni–juli", "Marts–maj", "September–november", "December"], correct: 0 },
+  { question: "Hvad kan du sætte op for at hjælpe solitære bier?", answers: ["Insekthotel", "Fuglebad", "Fuglefoderhus", "Lygtepæl"], correct: 0 },
+  { question: "Hvor bor en honningbikoloni?", answers: ["I et bistade", "I et mudderhul", "Under vand", "I en myretue"], correct: 0 }
+];
+
+// Svær – detaljerede spørgsmål (inkl. lookalikes og plantefakta fra Natur-siden)
+const quizQuestionsHard = [
+  { question: "Hvilket kendetegn afslører, at en svirreflue ikke er en bi?", answers: ["Kun ét par vinger", "Den er gul og sort", "Den kan flyve", "Den besøger blomster"], correct: 0 },
+  { question: "Hvilket dyr efterligner honningbiernes farver men er en flue?", answers: ["Droneflue (Eristalis tenax)", "Humlebi", "Gedehams", "Papirhveps"], correct: 0 },
+  { question: "Hvilket lookalike har slank krop med tydelig smal talje og kan stikke flere gange?", answers: ["Hveps (Vespula sp.)", "Honningbi", "Svirreflue", "Humle-svirreflue"], correct: 0 },
+  { question: "Hvilket lookalike imiterer humlebiernes pels og farver?", answers: ["Humle-svirreflue (Volucella bombylans)", "Droneflue", "Gedehams", "Papirhveps"], correct: 0 },
+  { question: "Hvilken plante giver meget pollen og nektar fra juli til september?", answers: ["Solsikke (Helianthus annuus)", "Løvetand", "Lavendel", "Brombær"], correct: 0 },
+  { question: "Hvornår blomstrer løvetand (Taraxacum officinale)?", answers: ["Marts–maj", "Maj–august", "Juli–oktober", "November–januar"], correct: 0 },
+  { question: "Hvornår blomstrer lavendel (Lavandula) typisk?", answers: ["Juli–august", "Marts–maj", "September–november", "December"], correct: 0 },
+  { question: "Hvilken plante er en sen og vigtig fødekilde (august–oktober)?", answers: ["Hvid fedtsten (Sedum album)", "Ringblomst", "Phacelia", "Katteurt"], correct: 0 },
+  { question: "Hvilken plante er kendt som fremragende bi-eng (maj–september)?", answers: ["Phacelia (P. tanacetifolia)", "Marguerit", "Dahlia", "Karpaterklokke"], correct: 0 },
+  { question: "Hvad er arbejderbiernes primære rolle i bistokken?", answers: ["Indsamle nektar/pollen og passe larver", "Lægge æg", "Parre sig med dronningen", "Bygge papir-reder"], correct: 0 },
+  { question: "Hvad er dronernes (hanner) primære opgave?", answers: ["At parre sig med en dronning", "At samle nektar", "At forsvare reden", "At lave honning"], correct: 0 },
+  { question: "Hvilken temperatur holdes stabil i bistaden?", answers: ["Ca. 35°C", "Ca. 20°C", "Ca. 25°C", "Ca. 40°C"], correct: 0 },
+  { question: "Hvilken plante blomstrer fra maj til oktober og er god for mange biarter?", answers: ["Marguerit (Leucanthemum vulgare)", "Brombær", "Ringblomst", "Vandlilje"], correct: 0 },
+  { question: "Hvilken art er blandt verdens største bier og bygger frit hængende tavler?", answers: ["Kæmpehonningbi (Apis dorsata)", "Østlig honningbi", "Mørk europæisk bi", "Rød murerbi"], correct: 0 },
+  { question: "Hvilket kendetegn har papirhvepse (Polistes sp.)?", answers: ["Meget slanke med lange ben; åbne papir-reder", "Pelsede og mørke", "Store øjne og korte antenner", "Uden brod og kan ikke stikke"], correct: 0 },
+  // Nye svære spørgsmål
+  { question: "Hvornår blev Megachile pluto først beskrevet, og hvor?", answers: ["1859 på Bacan (Nord-Molukkerne)", "2019 i Europa", "1700 i Danmark", "1960 i USA"], correct: 0 },
+  { question: "Hvilken art blev genfundet i 2019 efter årtier?", answers: ["Megachile pluto", "Apis cerana", "Bombus pascuorum", "Osmia bicornis"], correct: 0 },
+  { question: "Xylocopa violacea er vigtig bestøver især af?", answers: ["Ærter og bønner", "Hvede og rug", "Ris", "Majs"], correct: 0 },
+  { question: "Rød murerbi (Osmia bicornis) er?", answers: ["Solitær og effektiv frugtbestøver", "En gedehams", "En papirhveps", "En svirreflue"], correct: 0 },
+  { question: "Apis cerana er udbredt i?", answers: ["Syd- og Sydøstasien", "Nordamerika", "Skandinavien", "Australien kun"], correct: 0 },
+  { question: "Brombær (Rubus fruticosus) blomstrer typisk?", answers: ["Maj–august", "Januar–marts", "November–december", "Kun i april"], correct: 0 },
+  { question: "Katteurt (Nepeta cataria) blomstrer typisk?", answers: ["Juni–september", "December–februar", "Marts–april", "November"], correct: 0 },
+  { question: "Karpaterklokke (Campanula carpatica) blomstrer?", answers: ["Maj–august", "August–oktober", "Januar–marts", "April–maj"], correct: 0 },
+  { question: "Vandlilje (Nymphaea) blomstrer typisk?", answers: ["Juni–oktober", "Marts–april", "November–januar", "Kun i maj"], correct: 0 },
+  { question: "Gedehams (Vespa crabro) bygger?", answers: ["Store papirtavler i hulrum", "Honningtavler", "Åbne reder under udhæng", "Muddernests under vand"], correct: 0 }
+];
+
+// Robust Fisher–Yates shuffle til ægte tilfældighed
+function shuffleArray(arr) {
+  const a = Array.isArray(arr) ? arr.slice() : [];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 // Quiz state
+let currentDifficulty = 'medium';
 let currentQuestions = [];
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
 let selectedAnswer = null;
+let currentAnswerOrder = [];
+let currentCorrectIndex = 0;
 let highScore = 0;
 
 // DOM elements
@@ -617,28 +699,52 @@ const startQuizBtn = document.getElementById('start-quiz-btn');
 const submitAnswerBtn = document.getElementById('submit-answer-btn');
 const restartQuizBtn = document.getElementById('restart-quiz-btn');
 const successIndicator = document.getElementById('success-indicator');
+const diffEasy = document.getElementById('diff-easy');
+const diffMedium = document.getElementById('diff-medium');
+const diffHard = document.getElementById('diff-hard');
+const difficultyLabel = document.getElementById('current-difficulty-label');
 
 // Initialize quiz
 document.addEventListener('DOMContentLoaded', function() {
+  updateDifficultyLabel();
   loadHighScore();
+  
+  [diffEasy, diffMedium, diffHard].forEach(el => {
+    if (el) el.addEventListener('change', onDifficultyChange);
+  });
   
   startQuizBtn.addEventListener('click', startQuiz);
   submitAnswerBtn.addEventListener('click', submitAnswer);
   restartQuizBtn.addEventListener('click', restartQuiz);
 });
 
+function getHighScoreKey() {
+  return 'beeQuizHighScore_' + currentDifficulty;
+}
 function loadHighScore() {
-  highScore = parseInt(localStorage.getItem('beeQuizHighScore')) || 0;
+  highScore = parseInt(localStorage.getItem(getHighScoreKey())) || 0;
   document.getElementById('current-highscore').textContent = highScore;
 }
 
 function saveHighScore(score) {
   if (score > highScore) {
     highScore = score;
-    localStorage.setItem('beeQuizHighScore', highScore);
+    localStorage.setItem(getHighScoreKey(), highScore);
     return true; // New high score
   }
   return false;
+}
+
+function updateDifficultyLabel() {
+  const map = { easy: 'Let', medium: 'Middel', hard: 'Svær' };
+  if (difficultyLabel) difficultyLabel.textContent = map[currentDifficulty] || currentDifficulty;
+}
+
+
+function onDifficultyChange(e) {
+  currentDifficulty = e.target.value;
+  updateDifficultyLabel();
+  loadHighScore();
 }
 
 function showSuccessIndicator() {
@@ -666,9 +772,12 @@ function startQuiz() {
   currentQuestionIndex = 0;
   correctAnswers = 0;
   selectedAnswer = null;
+  currentAnswerOrder = [];
+  currentCorrectIndex = 0;
   
-  // Shuffle questions randomly
-  currentQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+  // Vælg spørgsmål ud fra sværhedsgrad og bland dem
+  const bank = currentDifficulty === 'easy' ? quizQuestionsEasy : (currentDifficulty === 'hard' ? quizQuestionsHard : quizQuestions);
+  currentQuestions = shuffleArray([...bank]);
   
   // Show game screen
   quizStartDiv.classList.add('hidden');
@@ -690,18 +799,22 @@ function displayCurrentQuestion() {
   document.getElementById('question-text').textContent = question.question;
   document.getElementById('correct-count').textContent = correctAnswers;
   
-  // Create answer options
+  // Create answer options (randomized order)
   const answersContainer = document.getElementById('answers');
   answersContainer.innerHTML = '';
   
-  question.answers.forEach((answer, index) => {
+  const indices = Array.from({ length: question.answers.length }, (_, i) => i);
+  currentAnswerOrder = shuffleArray(indices);
+  currentCorrectIndex = currentAnswerOrder.indexOf(question.correct);
+  
+  currentAnswerOrder.forEach((origIndex, displayIndex) => {
     const answerDiv = document.createElement('div');
     answerDiv.className = 'answer-option';
-    answerDiv.textContent = answer;
-    answerDiv.dataset.index = index;
+    answerDiv.textContent = question.answers[origIndex];
+    answerDiv.dataset.index = displayIndex;
     
     answerDiv.addEventListener('click', function() {
-      selectAnswer(index, answerDiv);
+      selectAnswer(displayIndex, answerDiv);
     });
     
     answersContainer.appendChild(answerDiv);
@@ -728,10 +841,12 @@ function submitAnswer() {
   if (selectedAnswer === null) return;
   
   const question = currentQuestions[currentQuestionIndex];
-  const isCorrect = selectedAnswer === question.correct;
+  const isCorrect = selectedAnswer === currentCorrectIndex;
   
   if (isCorrect) {
     correctAnswers++;
+    // Gem highscore med det samme, hvis slået
+    saveHighScore(correctAnswers);
     currentQuestionIndex++;
     
     // Show success indicator
@@ -776,7 +891,6 @@ function showResult(success, message) {
 }
 
 function restartQuiz() {
-  // Go directly to quiz game instead of start screen
   startQuiz();
 }
 
@@ -784,6 +898,7 @@ function restartQuiz() {
 function navigateToPage(url) {
   window.location.href = url;
 }
+
 </script>
 
 </body>
