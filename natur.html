@@ -85,7 +85,7 @@
     <div class="accordion">
       <h2>Hvordan er en bistok opbygget? <span class="arrow">▶</span></h2>
       <div class="panel">
-        <p>En bistok består af tusindvis af bier organiseret i et velfungerende samfund. I centrum finder man <strong>dronningen</strong>, som lægger æg og sikrer koloniens overlevelse. <strong>Arbejderbier</strong> (hunner) udgør størstedelen af stokken og udfører alle opgaver: indsamling af nektar og pollen, pasning af larver, rengøring, byggeri af vokstavler og forsvar af reden. <strong>Droner</strong> (hanner) har kun én opgave: at parre sig med en dronning. Bistokken bygges op af sekskantede voksceller, hvor bierne opbevarer honning, pollen og larver. Dette hierarki og samarbejde sikrer, at hele kolonien kan overleve og trives.</p>
+        <p>En bistok består af tusindvis af bier organiseret i et velfungerende samfund. I centrum finder man dronningen, som lægger æg og sikrer koloniens overlevelse. Arbejderbier (hunner) udgør størstedelen af stokken og udfører alle opgaver: indsamling af nektar og pollen, pasning af larver, rengøring og forsvar af reden. Droner (hanner) har kun én opgave: at parre sig med en dronning. Bistokken bygges op af sekskantede voksceller, hvor bierne opbevarer honning, pollen og larver.</p>
       </div>
     </div>
 
@@ -506,6 +506,39 @@
       </div>
     </div>
 
+    <div class="accordion smooth" id="saeson-accordion">
+      <h2>Sæsonkalender – blomstring og honning <span class="arrow">▶</span></h2>
+      <div class="panel">
+        <div class="season-calendar" id="season-cal">
+          <div class="month-picker" role="tablist" aria-label="Vælg måned">
+            <button class="month-btn" data-month="1" role="tab" aria-selected="false">Jan</button>
+            <button class="month-btn" data-month="2" role="tab" aria-selected="false">Feb</button>
+            <button class="month-btn" data-month="3" role="tab" aria-selected="false">Mar</button>
+            <button class="month-btn" data-month="4" role="tab" aria-selected="false">Apr</button>
+            <button class="month-btn" data-month="5" role="tab" aria-selected="false">Maj</button>
+            <button class="month-btn" data-month="6" role="tab" aria-selected="false">Jun</button>
+            <button class="month-btn" data-month="7" role="tab" aria-selected="false">Jul</button>
+            <button class="month-btn" data-month="8" role="tab" aria-selected="false">Aug</button>
+            <button class="month-btn" data-month="9" role="tab" aria-selected="false">Sep</button>
+            <button class="month-btn" data-month="10" role="tab" aria-selected="false">Okt</button>
+            <button class="month-btn" data-month="11" role="tab" aria-selected="false">Nov</button>
+            <button class="month-btn" data-month="12" role="tab" aria-selected="false">Dec</button>
+          </div>
+          <div class="season-columns">
+            <section>
+              <h3>Blomstring (udvalg)</h3>
+              <ul id="season-plants" class="season-list"></ul>
+            </section>
+            <section>
+              <h3>Honningtyper (typisk)</h3>
+              <ul id="season-honey" class="season-list"></ul>
+            </section>
+          </div>
+          <p class="season-note">Tiderne varierer efter klima og region. Se flere detaljer i planteafsnittet ovenfor.</p>
+        </div>
+      </div>
+    </div>
+
     <button class="back-btn" onclick="navigateToPage('index.html')">⬅ Tilbage til forsiden</button>
   </div>
 
@@ -600,6 +633,58 @@ function navigateToPage(url) {
   window.location.href = url;
 }
 
+// Sæsonkalender data og funktioner
+const PLANTS_BY_MONTH = {
+  1: [], 2: [],
+  3: ["Løvetand (Taraxacum officinale)"],
+  4: ["Løvetand (Taraxacum officinale)"],
+  5: ["Løvetand (slutter)", "Brombær", "Marguerit", "Phacelia", "Klokke", "Ringblomst", "Karpaterklokke"],
+  6: ["Hindbær", "Marguerit", "Phacelia", "Katteurt", "Klokke", "Ringblomst", "Karpaterklokke", "Vandlilje"],
+  7: ["Solsikke", "Lavendel", "Dahlia", "Marguerit", "Phacelia", "Katteurt", "Ringblomst", "Vandlilje"],
+  8: ["Solsikke", "Dahlia", "Hvid fedtsten", "Phacelia", "Katteurt", "Ringblomst", "Vandlilje"],
+  9: ["Solsikke (slutter)", "Dahlia", "Hvid fedtsten", "Phacelia", "Katteurt", "Ringblomst", "Vandlilje"],
+ 10: ["Dahlia (slutter)", "Hvid fedtsten", "Ringblomst", "Vandlilje (slutter)"] ,
+ 11: [], 12: []
+};
+const HONEY_BY_MONTH = {
+  1: [], 2: [],
+  3: [],
+  4: ["Forårshonning", "Raps"],
+  5: ["Raps", "Forårshonning", "Akacie (Robinia)"],
+  6: ["Akacie", "Kløver", "Skovhonning", "Lind (starter)"],
+  7: ["Lind (peak)", "Kløver", "Skovhonning"],
+  8: ["Kløver", "Skovhonning", "Lyng (starter)"],
+  9: ["Lyng"],
+ 10: ["Sen skovhonning"],
+ 11: [], 12: []
+};
+function initSeasonCalendar() {
+  const wrap = document.getElementById('season-cal');
+  if (!wrap) return;
+  const buttons = wrap.querySelectorAll('.month-btn');
+  const plantsUL = document.getElementById('season-plants');
+  const honeyUL = document.getElementById('season-honey');
+  const setSelected = (m) => {
+    buttons.forEach(b => {
+      const sel = parseInt(b.dataset.month) === m;
+      b.classList.toggle('selected', sel);
+      b.setAttribute('aria-selected', sel ? 'true' : 'false');
+    });
+  };
+  const render = (m) => {
+    setSelected(m);
+    const plants = PLANTS_BY_MONTH[m] || [];
+    const honeys = HONEY_BY_MONTH[m] || [];
+    plantsUL.innerHTML = plants.length ? plants.map(p => `<li>${p}</li>`).join('') : '<li>(ingen)</li>';
+    honeyUL.innerHTML = honeys.length ? honeys.map(h => `<li>${h}</li>`).join('') : '<li>(ingen)</li>';
+  };
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => render(parseInt(btn.dataset.month)));
+  });
+  const nowM = Math.min(12, Math.max(1, new Date().getMonth() + 1));
+  render(nowM);
+}
+
 // Bee-cards: Öffnen per Klick/Enter, schließen nur außerhalb oder beim Öffnen einer anderen Karte
 // (Klick auf Bild/Text schließt NICHT mehr die Fakten)
 document.addEventListener('DOMContentLoaded', () => {
@@ -642,6 +727,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.bee-card.open').forEach(c => { c.classList.remove('open'); c.setAttribute('aria-pressed','false'); });
     }
   });
+
+  // Init sæsonkalender
+  initSeasonCalendar();
 });
 </script>
 </body>
