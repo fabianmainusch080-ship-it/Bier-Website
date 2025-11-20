@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="da">
 <head>
@@ -272,7 +271,6 @@ footer {
       </div>
     </div>
 
-
     <div class="accordion-section">
       <div class="accordion-header">Hvordan vores projekt hjælper <span class="arrow">▶</span></div>
       <div class="accordion-content">
@@ -308,7 +306,6 @@ function toggleAccordion(e) {
   const section = header.parentElement;
   const content = header.nextElementSibling;
 
-  // Clean up any existing transition listeners to prevent conflicts
   const existingListeners = content._transitionListeners || [];
   existingListeners.forEach(listener => {
     content.removeEventListener('transitionend', listener);
@@ -319,7 +316,6 @@ function toggleAccordion(e) {
   header.setAttribute('aria-expanded', isActive ? 'true' : 'false');
 
   if (isActive) {
-    // Opening
     content.style.height = content.scrollHeight + 'px';
     content.style.paddingTop = '15px';
     content.style.paddingBottom = '15px';
@@ -327,21 +323,18 @@ function toggleAccordion(e) {
     const onEnd = (ev) => {
       if (ev.propertyName !== 'height') return;
       content.removeEventListener('transitionend', onEnd);
-      if (section.classList.contains('active')) { // Only set auto if still active
+      if (section.classList.contains('active')) {
         content.style.height = 'auto';
       }
     };
     content.addEventListener('transitionend', onEnd);
     content._transitionListeners = [onEnd];
   } else {
-    // Closing - ensure we start from a fixed height
     if (content.style.height === 'auto' || content.style.height === '') {
       content.style.height = content.scrollHeight + 'px';
-      // Force a reflow to apply the height
       content.offsetHeight;
     }
     
-    // Small delay to ensure height is set before animating to 0
     requestAnimationFrame(() => {
       content.style.height = '0';
       content.style.paddingTop = '0';
@@ -357,6 +350,9 @@ window.addEventListener('DOMContentLoaded', () => {
   if (mainEl) mainEl.classList.add('visible');
 });
 </script>
+
+<!-- Adsterra Code -->
+<script type='text/javascript' src='//pl28094940.effectivegatecpm.com/cb/62/7b/cb627b2e57db9375e4457fec5e0b6c00.js'></script>
 
 </body>
 </html>
